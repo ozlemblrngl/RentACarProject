@@ -1,11 +1,11 @@
-using Application.Features.Brands.Commands.Create;
+﻿using Application.Features.Brands.Commands.Create;
 using Application.Features.Brands.Commands.Delete;
 using Application.Features.Brands.Commands.Update;
 using Application.Features.Brands.Queries.GetById;
 using Application.Features.Brands.Queries.GetList;
+using Microsoft.AspNetCore.Mvc;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
-using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
@@ -14,9 +14,12 @@ namespace WebAPI.Controllers;
 public class BrandsController : BaseController
 {
     [HttpPost]
+
+    // burada command'im içinde name olan bir şey
+    // Mediator'e diyoruz ki elimde bir command var ve vir commandi sadece bir handler ile kullanabiliriz.
     public async Task<IActionResult> Add([FromBody] CreateBrandCommand createBrandCommand)
     {
-        CreatedBrandResponse response = await Mediator.Send(createBrandCommand);
+        CreatedBrandResponse response = await Mediator.Send(createBrandCommand);  // burada bunun handler ı kim diyoruz, belleğinden bakıyor. CreateBrandCommand içindeki CreateBrandCommandHandlerı (class) buluyor ve onun Handle metodunu çalıştırıyor
 
         return Created(uri: "", response);
     }

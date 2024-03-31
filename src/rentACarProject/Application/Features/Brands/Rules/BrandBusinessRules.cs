@@ -1,9 +1,9 @@
-using Application.Features.Brands.Constants;
+﻿using Application.Features.Brands.Constants;
 using Application.Services.Repositories;
+using Domain.Entities;
 using NArchitecture.Core.Application.Rules;
 using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 using NArchitecture.Core.Localization.Abstraction;
-using Domain.Entities;
 
 namespace Application.Features.Brands.Rules;
 
@@ -38,5 +38,20 @@ public class BrandBusinessRules : BaseBusinessRules
             cancellationToken: cancellationToken
         );
         await BrandShouldExistWhenSelected(brand);
+    }
+
+    // bir marka ismi tekrar edemez kuralımız var diyelim
+
+    public async Task BrandNameCannotBeDuplicatedWhenInserted(string name)
+    {
+        Brand? result = await _brandRepository.GetAsync(
+            predicate: b => b.Name.ToLower() == name.ToLower()
+        );
+
+        if (result != null)
+        {
+            throw new BusinessException(BrandsBusinessMessages.BrandNameExists);
+        }
+
     }
 }
