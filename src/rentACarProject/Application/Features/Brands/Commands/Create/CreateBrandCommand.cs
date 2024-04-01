@@ -51,6 +51,10 @@ public class CreateBrandCommand : IRequest<CreatedBrandResponse>
         // burada gelen command'i bir brand nesnesine çeviriyoruz.
         public async Task<CreatedBrandResponse> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
         {
+            // iş kuralımızı görüldüğü üzere gelip burada yazıyoruz başka bir iş kuralı varsa onu da altına ekleyerek devam ediyoruz.
+
+            await _brandBusinessRules.BrandNameCannotBeDuplicatedWhenInserted(request.Name);
+
             Brand brand = _mapper.Map<Brand>(request);
             // burada autoMapper ile hızlıca mapleyip veritabanına ekledik. 
 

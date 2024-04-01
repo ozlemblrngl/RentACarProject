@@ -1,4 +1,4 @@
-using Application;
+﻿using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -93,6 +93,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// AŞAĞIDAKİ YORUM SATIRINI KALDIRIRSAK (if li kısım) BİZE HATANIN NE OLDUĞUNU GÖSTERİR.ama bunu herkesin görmesini istemeyiz güvenlik açığı oluşturur keza.
 if (app.Environment.IsProduction())
     app.ConfigureCustomExceptionMiddleware();
 
