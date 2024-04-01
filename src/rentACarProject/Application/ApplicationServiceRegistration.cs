@@ -63,6 +63,7 @@ public static class ApplicationServiceRegistration
 
         services.AddScoped<IBrandService, BrandManager>();
         services.AddScoped<IModelService, ModelManager>();
+        services.AddScoped<IModelService, ModelManager>();
         return services;
     }
 

@@ -1,10 +1,11 @@
-using Application.Services.Repositories;
+﻿using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Paging;
-using MediatR;
 
 namespace Application.Features.Models.Queries.GetList;
 
@@ -25,11 +26,15 @@ public class GetListModelQuery : IRequest<GetListResponse<GetListModelListItemDt
 
         public async Task<GetListResponse<GetListModelListItemDto>> Handle(GetListModelQuery request, CancellationToken cancellationToken)
         {
+            // buranın brand tablosuna join yapmasını istiyoruz diyelim
+
             IPaginate<Model> models = await _modelRepository.GetListAsync(
+                // predicate: m => m.DailyPrice<3000, // bu tarz where koşulları da yazabiliriz.
+                include: m => m.Include(m => m.Brand), // bu kou yazarız
                 index: request.PageRequest.PageIndex,
-                size: request.PageRequest.PageSize, 
+                size: request.PageRequest.PageSize,
                 cancellationToken: cancellationToken
-            );
+            ); ;
 
             GetListResponse<GetListModelListItemDto> response = _mapper.Map<GetListResponse<GetListModelListItemDto>>(models);
             return response;
