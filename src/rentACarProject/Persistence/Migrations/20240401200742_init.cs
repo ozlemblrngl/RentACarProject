@@ -29,6 +29,21 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fuels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fuels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OperationClaims",
                 columns: table => new
                 {
@@ -69,6 +84,7 @@ namespace Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BrandId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FuelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DailyPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UmageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -82,6 +98,12 @@ namespace Persistence.Migrations
                         name: "FK_Models_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Models_Fuels_FuelId",
+                        column: x => x.FuelId,
+                        principalTable: "Fuels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -233,18 +255,30 @@ namespace Persistence.Migrations
                     { 38, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Models.Write", null },
                     { 39, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Models.Create", null },
                     { 40, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Models.Update", null },
-                    { 41, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Models.Delete", null }
+                    { 41, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Models.Delete", null },
+                    { 42, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Admin", null },
+                    { 43, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Read", null },
+                    { 44, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Write", null },
+                    { 45, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Create", null },
+                    { 46, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Update", null },
+                    { 47, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Delete", null },
+                    { 48, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Admin", null },
+                    { 49, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Read", null },
+                    { 50, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Write", null },
+                    { 51, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Create", null },
+                    { 52, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Update", null },
+                    { 53, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Fuels.Delete", null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AuthenticatorType", "CreatedDate", "DeletedDate", "Email", "PasswordHash", "PasswordSalt", "UpdatedDate" },
-                values: new object[] { new Guid("6d576028-d8ea-450b-862d-db0ea8bfd697"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "narch@kodlama.io", new byte[] { 120, 29, 114, 209, 180, 121, 33, 30, 60, 8, 0, 183, 76, 159, 244, 230, 29, 117, 201, 29, 192, 109, 206, 38, 55, 102, 246, 179, 28, 240, 228, 159, 255, 107, 221, 29, 56, 101, 35, 89, 120, 248, 149, 18, 185, 78, 56, 28, 117, 254, 7, 151, 10, 87, 151, 244, 103, 117, 66, 223, 162, 229, 230, 207 }, new byte[] { 65, 162, 14, 111, 14, 252, 210, 48, 15, 109, 151, 168, 86, 114, 40, 145, 92, 199, 75, 21, 112, 233, 103, 190, 132, 224, 109, 226, 23, 57, 220, 210, 149, 168, 237, 59, 84, 82, 233, 26, 215, 49, 148, 57, 133, 105, 122, 176, 2, 37, 40, 37, 184, 254, 186, 161, 129, 81, 94, 177, 175, 209, 153, 153, 255, 226, 84, 112, 134, 77, 150, 135, 116, 186, 133, 17, 244, 84, 130, 24, 161, 235, 161, 169, 237, 181, 251, 55, 152, 246, 87, 83, 191, 37, 140, 181, 236, 197, 167, 77, 102, 62, 9, 16, 185, 201, 191, 121, 1, 142, 185, 99, 197, 79, 40, 209, 40, 168, 40, 19, 190, 89, 79, 192, 37, 218, 76, 128 }, null });
+                values: new object[] { new Guid("f990167e-d40b-425e-b871-4370eb9bdd6f"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "narch@kodlama.io", new byte[] { 18, 226, 36, 94, 242, 124, 115, 203, 32, 164, 102, 5, 202, 116, 7, 216, 83, 209, 103, 29, 46, 213, 152, 115, 249, 165, 184, 204, 68, 146, 81, 209, 31, 174, 86, 181, 10, 152, 26, 139, 192, 90, 73, 139, 158, 151, 155, 15, 209, 71, 235, 50, 92, 185, 139, 1, 87, 12, 225, 19, 231, 69, 115, 199 }, new byte[] { 33, 170, 51, 46, 219, 142, 31, 53, 239, 71, 56, 199, 66, 143, 16, 232, 55, 19, 58, 103, 23, 29, 80, 149, 119, 120, 42, 62, 232, 86, 166, 237, 219, 108, 134, 38, 21, 18, 75, 192, 3, 222, 226, 108, 102, 18, 171, 52, 67, 149, 147, 160, 153, 5, 159, 231, 206, 192, 243, 35, 184, 219, 242, 183, 170, 219, 144, 20, 25, 47, 20, 21, 113, 126, 217, 184, 112, 104, 228, 18, 18, 100, 104, 197, 150, 23, 76, 100, 34, 24, 18, 116, 57, 107, 13, 251, 111, 75, 74, 141, 42, 60, 245, 130, 166, 138, 169, 204, 177, 131, 186, 192, 129, 72, 24, 115, 47, 200, 136, 252, 35, 5, 41, 143, 74, 17, 199, 1 }, null });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
-                values: new object[] { new Guid("b0e42299-9913-49d0-b035-19d5f83551dc"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, null, new Guid("6d576028-d8ea-450b-862d-db0ea8bfd697") });
+                values: new object[] { new Guid("21a0067f-b0f4-449d-a412-6b0659387133"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, null, new Guid("f990167e-d40b-425e-b871-4370eb9bdd6f") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmailAuthenticators_UserId",
@@ -255,6 +289,11 @@ namespace Persistence.Migrations
                 name: "IX_Models_BrandId",
                 table: "Models",
                 column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Models_FuelId",
+                table: "Models",
+                column: "FuelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OtpAuthenticators_UserId",
@@ -297,6 +336,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Brands");
+
+            migrationBuilder.DropTable(
+                name: "Fuels");
 
             migrationBuilder.DropTable(
                 name: "OperationClaims");

@@ -1,4 +1,4 @@
-﻿using Application.Services.Repositories;
+using Application.Services.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +29,8 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IModelRepository, ModelRepository>();
         services.AddScoped<IModelRepository, ModelRepository>();
+        services.AddScoped<IFuelRepository, FuelRepository>();
+        services.AddScoped<IFuelRepository, FuelRepository>();
         return services;
     }
 }
